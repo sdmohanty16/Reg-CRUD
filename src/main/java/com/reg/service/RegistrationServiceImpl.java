@@ -3,6 +3,9 @@ package com.reg.service;
 import com.reg.entity.Registration;
 import com.reg.payload.RegistrationDto;
 import com.reg.repository.RegistrationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,8 +51,11 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     @Override
-    public List<RegistrationDto> getAllRegistration() {
-        List<Registration> registrations = registrationRepository.findAll();
+    public List<RegistrationDto> getAllRegistration(int pageNo, int pageSize) {
+        //List<Registration> registrations = registrationRepository.findAll();
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Registration> all = registrationRepository.findAll(pageable);
+        List<Registration> registrations = all.getContent();
         List<RegistrationDto> collect = registrations.stream().map(r -> mapToDto(r)).collect(Collectors.toList());
         return collect;
     }

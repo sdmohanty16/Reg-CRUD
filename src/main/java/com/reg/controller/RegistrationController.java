@@ -46,8 +46,11 @@ public class RegistrationController {
 
     //http://localhost:8080/api/v1/registration
     @GetMapping
-    public ResponseEntity<List<RegistrationDto>> getAllRegistration(){
-        List<RegistrationDto> allRegistration = registrationService.getAllRegistration();
+    public ResponseEntity<List<RegistrationDto>> getAllRegistration(
+            @RequestParam(name="pageNo", required = false, defaultValue ="0")int pageNo,
+            @RequestParam(name="pageSize", required = false, defaultValue ="3")int pageSize
+    ){
+        List<RegistrationDto> allRegistration = registrationService.getAllRegistration(pageNo,pageSize);
         return new ResponseEntity<>(allRegistration, HttpStatus.OK);
     }
 
